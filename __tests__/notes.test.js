@@ -1,24 +1,28 @@
-const {saveNewNote, validateNote, findNoteById} = require("../lib/notes");
-const notes = require("../db/db.json");
+const uniqid = require('uniqid');
+const { loadNotesFromFile, deleteNoteById, saveNewNote, validateNote } = require("../lib/notes");
 const fs = require("fs");
 jest.mock('fs');
 
+
 test("saveNewNote creates a new note and adds it to the notes array", () => {
-    console.log(notes);
+    const noteId = uniqid();
+    const notes = loadNotesFromFile();
 
     const note = saveNewNote(
-        {title:"Test Title", text:"Test text", id: "test_id"},
+        {title:"Save New Note Title", text:"Save New Note text", id: noteId},
         notes
     );
 
-    expect(note.title).toBe("Test Title");
-    expect(note.text).toBe("Test text");
-    expect(note.id).toBe("test_id");
+    expect(note.title).toBe("Save New Note Title");
+    expect(note.text).toBe("Save New Note text");
+    expect(note.id).toBe(noteId);
 })
 
-test("validates note", () => {
+test("validateNote returns false for an invalid note and true for a valid note", () => {
+  const noteId = uniqid();
+
   const validNote = {
-    id: "valid_note",
+    id: noteId,
     title: "Valid Title",
     text: "valid text",
   };
@@ -33,15 +37,20 @@ test("validates note", () => {
   expect(invalidResult).toBe(false);
 });
 
-test("loads note by id", () => {
+test("deleteNoteById deletes the correct note by id", () => {
+    const noteId = uniqid();
+    const notes = loadNotesFromFile();
+
     saveNewNote(
-        {title:"Test Title", text:"Test text", id: "test_id"},
-        notes
+      {title:"Save New Note Title", text:"Save New Note text", id: noteId},
+      notes
     );
 
-    const loadedNote = findNoteById("test_id", notes);
+    const expectedResult = notes.filter(note => note.id = noteId);
 
-    expect(loadedNote.title).toBe("Test Title");
-    expect(loadedNote.text).toBe("Test text");
-    expect(loadedNote.id).toBe("test_id");
+    deleteNoteById(noteId, notes);
+
+    const actualResult = notes;
+
+    expect(actualResult).toMatchObject(expectedResult);
 })
