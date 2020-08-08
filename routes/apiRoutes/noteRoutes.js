@@ -9,7 +9,6 @@ router.get('/notes', (req, res) => {
 
 router.post('/notes', (req, res) => {
     // set id based on what the next index of the array will be
-    console.log(notes);
     req.body.id = notes.length.toString();
 
     // add note to the db.json file

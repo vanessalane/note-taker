@@ -1,6 +1,7 @@
 const {saveNewNote, validateNote, findNoteById} = require("../lib/notes");
 const notes = require("../db/db.json");
-
+const fs = require("fs");
+jest.mock('fs');
 
 test("saveNewNote creates a new note and adds it to the notes array", () => {
     console.log(notes);
