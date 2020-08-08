@@ -45,12 +45,8 @@ test("deleteNoteById deletes the correct note by id", () => {
       {title:"Save New Note Title", text:"Save New Note text", id: noteId},
       notes
     );
-
     const expectedResult = notes.filter(note => note.id = noteId);
 
     deleteNoteById(noteId, notes);
-
-    const actualResult = notes;
-
-    expect(actualResult).toMatchObject(expectedResult);
+    expect(notes).toMatchObject(expectedResult);
 })
