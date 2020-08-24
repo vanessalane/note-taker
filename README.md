@@ -9,6 +9,7 @@ A Node/Express app to create and delete notes.
 
 ## Packages Used
 - jest
+- express
 - uniqid
 
 ## Run Tests
